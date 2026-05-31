@@ -1,0 +1,15 @@
+[Unit]
+Description=Kensington trackball button mapper (ktrackball)
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/ktrackball/trackball_mapper.py --config /etc/ktrackball/config.toml run
+Restart=always
+RestartSec=2
+# Needs /dev/input (read) and /dev/uinput (write); runs as root for that.
+DeviceAllow=/dev/uinput rw
+DeviceAllow=char-input rw
+
+[Install]
+WantedBy=multi-user.target

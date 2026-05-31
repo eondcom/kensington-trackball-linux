@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Kensington Trackball Settings
+Name[ko]=Kensington 트랙볼 설정
+Comment=Assign actions to trackball buttons
+Comment[ko]=트랙볼 버튼에 동작 지정
+Exec=python3 /opt/ktrackball/ktrackball_gui.py
+Icon=input-mouse
+Terminal=false
+Categories=Settings;HardwareSettings;Utility;
+Keywords=trackball;kensington;mouse;button;

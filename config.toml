@@ -1,0 +1,86 @@
+# ktrackball configuration
+# ---------------------------------------------------------------------------
+# Which device to capture. Match by name (preferred — survives reconnects) or
+# by a fixed path. Find the exact name with:  trackball_mapper.py list
+# Match the trackball by name substring (case-insensitive). This catches the
+# SAME device whether it connects via its USB nano-receiver OR Bluetooth, and
+# covers multiple Kensington trackballs at once.
+device_match = [
+    "Expert Wireless",
+    "Slimblade",
+]
+# Or pin exact names / a fixed path instead:
+# device_names = ["Kensington Expert Wireless TB Mouse"]
+# device_path  = "/dev/input/event20"
+
+# User whose desktop session "command" actions run in (for launching GUI apps).
+# Auto-detected if omitted.
+# run_as_user = "yourusername"
+
+# Pointer (ball) speed multiplier, like a mouse-speed slider.
+#   1.0 = unchanged, >1 faster, <1 slower. Applied to all ball movement.
+pointer_speed = 1.0
+
+# Tuning for the optional hold-modes below.
+precision_factor = 0.35   # pointer speed while a precision_hold button is held
+scroll_divisor   = 18.0   # higher = slower ball-scrolling
+scroll_invert    = true   # natural-style scrolling direction
+
+# How long (ms) a button that takes part in a chord waits for its partner
+# before acting on its own. Lower = snappier single clicks, less chord margin.
+chord_window_ms = 40
+
+# ---------------------------------------------------------------------------
+# Button map.  KEY of each entry is the evdev button NAME the physical button
+# emits — find it with:  trackball_mapper.py learn
+#
+# The Kensington Expert reports up to 5 button codes:
+#   BTN_LEFT, BTN_RIGHT, BTN_MIDDLE, BTN_SIDE, BTN_EXTRA
+# Run `learn` and press each of the 4 corner buttons to see which is which,
+# then edit the names below to match.
+#
+# Action types:
+#   { type = "passthrough" }                         normal click
+#   { type = "key", keys = ["KEY_LEFTALT","KEY_LEFT"] }   inject a key combo
+#   { type = "command", command = "firefox" }        run a program
+#   { type = "scroll_hold" }                          hold -> ball scrolls
+#   { type = "precision_hold" }                       hold -> slow pointer
+# ---------------------------------------------------------------------------
+
+# This Kensington Expert reports only 4 buttons (confirmed via `learn`):
+#   BTN_LEFT, BTN_RIGHT, BTN_MIDDLE, BTN_SIDE   (there is NO BTN_EXTRA)
+[buttons]
+# Keep the two primary clicks normal.
+BTN_LEFT  = { type = "passthrough" }
+BTN_RIGHT = { type = "passthrough" }
+
+# --- Chosen feature: browser Back / Forward -------------------------------
+# Alt+Left / Alt+Right works in Firefox, Chrome, file managers, etc. — and is
+# Wayland-safe because the keystroke is injected at the kernel level.
+# If Back/Forward feel swapped vs. the physical buttons, just swap these two.
+BTN_SIDE   = { type = "key", keys = ["KEY_LEFTALT", "KEY_LEFT"]  }   # Back
+BTN_MIDDLE = { type = "key", keys = ["KEY_LEFTALT", "KEY_RIGHT"] }   # Forward
+
+# --- Ready-to-enable alternatives (uncomment / remap as you like) ---------
+# Keep middle-click instead of Forward:
+#   BTN_MIDDLE = { type = "passthrough" }
+# Other ideas:
+#   BTN_MIDDLE = { type = "scroll_hold" }                          # hold + roll ball to scroll
+#   BTN_MIDDLE = { type = "precision_hold" }                       # hold for slow/precise pointer
+#   BTN_MIDDLE = { type = "key", keys = ["KEY_LEFTCTRL", "KEY_W"] } # close tab
+#   BTN_SIDE   = { type = "key", keys = ["KEY_LEFTSUPER"] }         # open COSMIC launcher
+
+# --- Chords: two buttons pressed together = one action --------------------
+# Pressing both members within chord_window_ms fires the chord action and
+# suppresses the individual button actions. Chords accept key/command only.
+# The GUI also records each button's physical position in a [positions] table
+# (which the daemon ignores). Example "both top" / "both bottom":
+#   [[chords]]
+#   buttons = ["BTN_SIDE", "BTN_MIDDLE"]            # the two top buttons
+#   type = "key"
+#   keys = ["KEY_LEFTCTRL", "KEY_T"]               # -> new tab
+#
+#   [[chords]]
+#   buttons = ["BTN_LEFT", "BTN_RIGHT"]            # the two bottom buttons
+#   type = "command"
+#   command = "cosmic-launcher"
