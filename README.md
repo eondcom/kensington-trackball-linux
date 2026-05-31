@@ -7,6 +7,8 @@ or a precision mode. It works at the kernel level, so it runs under **Wayland**
 
 Built for: `Kensington Expert Wireless Trackball (047d:8018)` on Pop!_OS 24.04 COSMIC.
 
+![ktrackball GUI](docs/screenshot.png)
+
 ## How it works
 
 1. Grabs the trackball's pointer event device **exclusively** (`EVIOCGRAB`).
